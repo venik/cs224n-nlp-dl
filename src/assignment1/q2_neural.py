@@ -26,7 +26,7 @@ def forward_backward_prop(data, labels, params, dimensions):
     ### Unpack network parameters (do not modify)
     ofs = 0
     Dx, H, Dy = (dimensions[0], dimensions[1], dimensions[2])
-
+    # print('=> ss ' + str(params))
     W1 = np.reshape(params[ofs:ofs + Dx * H], (Dx, H))
     ofs += Dx * H
     b1 = np.reshape(params[ofs:ofs + H], (1, H))
@@ -36,32 +36,35 @@ def forward_backward_prop(data, labels, params, dimensions):
     b2 = np.reshape(params[ofs:ofs + Dy], (1, Dy))
 
     ### YOUR CODE HERE: forward propagation
-    # print('==>>> data.size: ' + str(data.shape) + ' W1: ' + str(W1.shape))
-    # print('==>>> W1: ' + str(W1.shape))
-    # print('==>>> H: ' + str(H))
-    # print('==>>> b1: ' + str(b1.shape))
-
     H_sigmoid = sigmoid(data.dot(W1) + b1)
-    # print('==>>> H_sigmoid: ' + str(H_sigmoid.shape))
-
     Y_softmax = softmax(H_sigmoid.dot(W2) + b2)
-    # print('==>>> Y_softmax: ' + str(Y_softmax.shape))
     cost = -1 * np.sum(labels * np.log(Y_softmax))
     ### END YOUR CODE
 
     ### YOUR CODE HERE: backward propagation
     #raise NotImplementedError
-    delta_1 = Y_softmax - labels
-    # print('delta_1: ' + str(delta_1.shape))
-    gradW2 = np.dot(H_sigmoid.T, delta_1)
-    gradb2 = np.sum(delta_1, axis=0)
+    # delta_1 = Y_softmax - labels
+    # # print('delta_1: ' + str(delta_1.shape))
+    # gradW2 = np.dot(H_sigmoid.T, delta_1)
+    # gradb2 = np.sum(delta_1, axis=0)
 
-    delta_2 = gradW2 = delta_1.dot(W2.T)
-    delta_3 = delta_2 * sigmoid_grad(H_sigmoid)
-    # delta_3 = delta_2.T.dot(sigmoid_grad(H_sigmoid))
+    # delta_2 = gradW2 = delta_1.dot(W2.T)
+    # delta_3 = delta_2 * sigmoid_grad(H_sigmoid)
+    # # delta_3 = delta_2.T.dot(sigmoid_grad(H_sigmoid))
 
-    gradW1 = np.dot(data.T, delta_3)
-    gradb1 = np.sum(delta_3, axis=0)
+    # gradW1 = np.dot(data.T, delta_3)
+    # gradb1 = np.sum(delta_3, axis=0)
+
+    dl2 = Y_softmax - labels
+    gradW2 = np.dot(H_sigmoid.T, dl2)
+    gradb2 = np.sum(dl2, axis=0)
+
+    dh = np.dot(dl2, W2.T)
+
+    dl1 = dh * sigmoid_grad(H_sigmoid)
+    gradW1 = np.dot(data.T, dl1)
+    gradb1 = np.sum(dl1, axis=0)
+
 
     # print('=========')
     ### END YOUR CODE
@@ -70,6 +73,7 @@ def forward_backward_prop(data, labels, params, dimensions):
     grad = np.concatenate((gradW1.flatten(), gradb1.flatten(),
         gradW2.flatten(), gradb2.flatten()))
 
+    # print('cost: ' + str(cost) + ' grad: ' + str(grad))
     return cost, grad
 
 

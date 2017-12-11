@@ -24,8 +24,6 @@ def gradcheck_naive(f, x):
     while not it.finished:
         ix = it.multi_index
 
-        print('=> ' + str(x[ix]))
-
         # Try modifying x[ix] with h defined above to compute
         # numerical gradients. Make sure you call random.setstate(rndstate)
         # before calling f(x) each time. This will make it possible
@@ -33,30 +31,24 @@ def gradcheck_naive(f, x):
 
         ### YOUR CODE HERE:
         # The assume that we need calculate the derivative numerically
-
-        # Well, the most basic solution is too coarse to pass:
-        # f'(x) = (f(x + h) - f(x)) / h
-        # need to come up with more complex solution
-        # random.setstate(rndstate)
-        # x_next, _ = f(x[ix] + h)
-        # random.setstate(rndstate)
-        # x_cur, _ = f(x[ix])
-        # numgrad = (x_next - x_cur) / h
-
+        
         # let's try interpolation
         # f'(x) = (f(x + h) - f(x - h)) / 2h
+        I = np.zeros_like(x)
+        I[ix] = 1
         random.setstate(rndstate)
-        x_next, _ = f(x[ix] + h)
+        x_next, _ = f(x + I*h)
         random.setstate(rndstate)
-        x_prev, _ = f(x[ix] - h)
+        x_prev, _ = f(x - I*h)
         numgrad = (x_next - x_prev) / (2*h)
-
-        # works :)
         
         ### END YOUR CODE
 
         # Compare gradients
         reldiff = abs(numgrad - grad[ix]) / max(1, abs(numgrad), abs(grad[ix]))
+        print('id: ' + str(ix) + ' reldiff: ' + str(reldiff))
+        print "\tYour gradient: %f \t Numerical gradient: %f" % (
+                grad[ix], numgrad)
         if reldiff > 1e-5:
             print "Gradient check failed."
             print "First gradient error found at index %s" % str(ix)
