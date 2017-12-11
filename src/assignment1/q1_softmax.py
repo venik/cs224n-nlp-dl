@@ -33,7 +33,8 @@ def softmax(x):
         x = x - np.reshape(np.amax(x, 1), (-1, 1))
 
         x = np.exp(x)
-        x = x / np.sum(x, 1)
+        # print('x.shape: ' + str(x.shape))
+        x = x / np.sum(x, 1).reshape(-1, 1)
     else:
         # Vector
         # 1a - optimization to achieve numerical stability
