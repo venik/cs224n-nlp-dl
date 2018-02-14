@@ -69,7 +69,7 @@ def getRegularizationValues():
 
 
 def chooseBestModel(results):
-    """Choose the best model based on parameter tuning on the dev set
+    """Choose the best model based on dev set performance.
 
     Arguments:
     results -- A list of python dictionaries of the following format:
@@ -80,6 +80,8 @@ def chooseBestModel(results):
             "dev": devAccuracy,
             "test": testAccuracy
         }
+
+    Each dictionary represents the performance of one model.
 
     Returns:
     Your chosen result dictionary.

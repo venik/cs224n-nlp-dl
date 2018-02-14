@@ -13,15 +13,15 @@ def softmax(x):
     http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html
 
     You should also make sure that your code works for a single
-    N-dimensional vector (treat the vector as a single row) and
-    for M x N matrices. This may be useful for testing later. Also,
+    D-dimensional vector (treat the vector as a single row) and
+    for N x D matrices. This may be useful for testing later. Also,
     make sure that the dimensions of the output match the input.
 
     You must implement the optimization in problem 1(a) of the
     written assignment!
 
     Arguments:
-    x -- A N dimensional vector or M x N dimensional numpy matrix.
+    x -- A D dimensional vector or N x D dimensional numpy matrix.
 
     Return:
     x -- You are allowed to modify x in-place
@@ -29,20 +29,15 @@ def softmax(x):
     orig_shape = x.shape
 
     if len(x.shape) > 1:
-        # find max element in every column (axis = 1) and reshare row vector to column vector
-        x = x - np.reshape(np.amax(x, 1), (-1, 1))
-
-        x = np.exp(x)
-        # print('x.shape: ' + str(x.shape))
-        x = x / np.sum(x, 1).reshape(-1, 1)
+        # Matrix
+        ### YOUR CODE HERE
+        raise NotImplementedError
+        ### END YOUR CODE
     else:
         # Vector
-        # 1a - optimization to achieve numerical stability
-        x = x - np.max(x)
-
-        # vector softmax
-        x = np.exp(x)
-        x =  x / np.sum(x)
+        ### YOUR CODE HERE
+        raise NotImplementedError
+        ### END YOUR CODE
 
     assert x.shape == orig_shape
     return x
@@ -83,8 +78,7 @@ def test_softmax():
     """
     print "Running your tests..."
     ### YOUR CODE HERE
-    # FIXME: ignore it for now
-    #raise NotImplementedError
+    raise NotImplementedError
     ### END YOUR CODE
 
 

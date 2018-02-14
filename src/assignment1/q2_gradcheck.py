@@ -19,36 +19,29 @@ def gradcheck_naive(f, x):
     fx, grad = f(x) # Evaluate function value at original point
     h = 1e-4        # Do not change this!
 
-    # Iterate over all indexes in x
+    # Iterate over all indexes ix in x to check the gradient.
     it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
     while not it.finished:
         ix = it.multi_index
 
-        # Try modifying x[ix] with h defined above to compute
-        # numerical gradients. Make sure you call random.setstate(rndstate)
+        # Try modifying x[ix] with h defined above to compute numerical
+        # gradients (numgrad).
+
+        # Use the centered difference of the gradient.
+        # It has smaller asymptotic error than forward / backward difference
+        # methods. If you are curious, check out here:
+        # https://math.stackexchange.com/questions/2326181/when-to-use-forward-or-central-difference-approximations
+
+        # Make sure you call random.setstate(rndstate)
         # before calling f(x) each time. This will make it possible
         # to test cost functions with built in randomness later.
 
         ### YOUR CODE HERE:
-        # The assume that we need calculate the derivative numerically
-        
-        # let's try interpolation
-        # f'(x) = (f(x + h) - f(x - h)) / 2h
-        I = np.zeros_like(x)
-        I[ix] = 1
-        random.setstate(rndstate)
-        x_next, _ = f(x + I*h)
-        random.setstate(rndstate)
-        x_prev, _ = f(x - I*h)
-        numgrad = (x_next - x_prev) / (2*h)
-        
+        raise NotImplementedError
         ### END YOUR CODE
 
         # Compare gradients
         reldiff = abs(numgrad - grad[ix]) / max(1, abs(numgrad), abs(grad[ix]))
-        print('id: ' + str(ix) + ' reldiff: ' + str(reldiff))
-        print "\tYour gradient: %f \t Numerical gradient: %f" % (
-                grad[ix], numgrad)
         if reldiff > 1e-5:
             print "Gradient check failed."
             print "First gradient error found at index %s" % str(ix)
@@ -83,7 +76,7 @@ def your_sanity_checks():
     """
     print "Running your sanity checks..."
     ### YOUR CODE HERE
-    #raise NotImplementedError
+    raise NotImplementedError
     ### END YOUR CODE
 
 

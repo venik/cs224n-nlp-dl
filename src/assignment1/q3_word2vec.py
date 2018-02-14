@@ -15,7 +15,7 @@ def normalizeRows(x):
     """
 
     ### YOUR CODE HERE
-    x = np.divide(x, np.sum(x**2, 1).reshape(-1, 1)**0.5)
+    raise NotImplementedError
     ### END YOUR CODE
 
     return x
@@ -58,8 +58,6 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     """
 
     ### YOUR CODE HERE
-    print("=>" + str(predicted))
-    print("=======")
     raise NotImplementedError
     ### END YOUR CODE
 
@@ -111,7 +109,7 @@ def skipgram(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     Implement the skip-gram model in this function.
 
     Arguments:
-    currrentWord -- a string of the current center word
+    currentWord -- a string of the current center word
     C -- integer, context size
     contextWords -- list of no more than 2*C strings, the context words
     tokens -- a dictionary that maps words to their indices in
