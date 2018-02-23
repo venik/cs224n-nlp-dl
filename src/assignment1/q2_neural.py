@@ -40,11 +40,32 @@ def forward_backward_prop(X, labels, params, dimensions):
 
     # Note: compute cost based on `sum` not `mean`.
     ### YOUR CODE HERE: forward propagation
-    raise NotImplementedError
+    # print('dim: ' + str(dimensions))
+    z1 = X.dot(W1) + b1
+    h = sigmoid(z1)
+    z2 = h.dot(W2) + b2
+    y_hat = softmax(z2)
+    # print('labels:\n' + str(labels))
+    # print('y_hat: ' + str(y_hat))
+    cost = -np.sum(labels * np.log(y_hat))
+    # print('cost:' + str(cost))
+    # print('=> labels: ' + str(labels))
+    # print('=> y_hat: ' + str(y_hat))
+
     ### END YOUR CODE
 
     ### YOUR CODE HERE: backward propagation
-    raise NotImplementedError
+    d1 = y_hat - labels
+    d2 = d1.dot(W2.T)
+    d3 = d2 * sigmoid_grad(h)
+
+    gradW2 = h.T.dot(d1)
+    gradb2 = np.sum(d1, axis=0)
+
+    # # print('d3:\n' + str(d3.shape))
+    # # print('X:\n' + str(X.shape))
+    gradW1 = X.T.dot(d3)
+    gradb1 = np.sum(d3, axis=0)
     ### END YOUR CODE
 
     ### Stack gradients (do not modify)
@@ -84,10 +105,15 @@ def your_sanity_checks():
     """
     print "Running your sanity checks..."
     ### YOUR CODE HERE
-    raise NotImplementedError
+    dimensions = [2, 3, 2]
+    X = np.array((1, 2, 3, 4)).reshape(2,2)
+    labels = np.array((0, 1, 1, 0)).reshape(2,2)
+    params = np.array((0.01, 0.02, 0.03, 0.04, 0.01, 0.02, 0.03, 0.04, 0.01, 0.02, 0.03, 0.04, 0.01, 0.02, 0.03, 0.04, 0.01, 0.02, 0.03, 0.04, 0.01, 0.02, 0.03))
+    gradcheck_naive(lambda params:
+        forward_backward_prop(X, labels, params, dimensions), params)
     ### END YOUR CODE
 
 
 if __name__ == "__main__":
     sanity_check()
-    your_sanity_checks()
+    # your_sanity_checks()
